@@ -18,3 +18,6 @@
 ## 📚 참고 도서  
 - 『Do it! 점프 투 스프링 부트 3』  
 - [교보문고 링크](https://product.kyobobook.co.kr/detail/S000211685975)
+
+## 📝 개념 정리
+- [티스토리 링크](https://duxpetal.tistory.com/category/%EC%B1%85%20%EC%A0%95%EB%A6%AC/%EC%A0%90%ED%94%84_%ED%88%AC_%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B83)
