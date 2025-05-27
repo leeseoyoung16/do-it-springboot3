@@ -18,32 +18,36 @@ repositories {
 }
 
 dependencies {
-	//Spring Boot 스타터
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// Spring Boot 기본 스타터들 (웹, JPA, Thymeleaf, 검증, 보안)
+	implementation 'org.springframework.boot:spring-boot-starter-web'           // 웹 애플리케이션 (내장 Tomcat 포함)
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'      // JPA 및 Hibernate 설정
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'     // 템플릿 엔진
+	implementation 'org.springframework.boot:spring-boot-starter-validation'    // Bean Validation (javax.validation)
+	implementation 'org.springframework.boot:spring-boot-starter-security'      // Spring Security
 
-	//Thymeleaf 확장 (레이아웃 템플릿 지원)
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	// Thymeleaf 확장 (레이아웃 및 보안 연동)
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'     // Thymeleaf 레이아웃 템플릿 지원
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'      // Thymeleaf에서 Spring Security 태그 사용
 
-	//DB
-	runtimeOnly 'com.h2database:h2'
+	// 데이터베이스 드라이버
+	runtimeOnly 'com.h2database:h2'                                             // 개발/테스트용 인메모리 DB
 
-	//Lombok (컴파일 전용)
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	// Lombok (코드 자동 생성)
+	compileOnly 'org.projectlombok:lombok'                                      // lombok 어노테이션 컴파일 시만 필요
+	annotationProcessor 'org.projectlombok:lombok'                              // lombok 처리기
 
-	//개발용 자동 리로딩
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// 개발 편의 기능
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'            // 개발 시 자동 재시작 지원
 
-	//테스트
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// 테스트 관련
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'     // 기본 테스트 지원 (JUnit, Mockito 등 포함)
+	testImplementation 'org.junit.jupiter:junit-jupiter'                       // JUnit5
+
+
+	// 마크다운
+	implementation 'org.commonmark:commonmark:0.21.0'                           // 마크다운 → HTML 변환
 }
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
