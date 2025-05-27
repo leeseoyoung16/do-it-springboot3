@@ -37,8 +37,18 @@
     </div>
     <!-- 답변의 갯수 표시 -->
     <h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
+    <!--  정렬 버튼 영역 -->
+    <div class="d-flex justify-content-end mb-2">
+        <a th:href="@{|/question/detail/${question.id}?answerPage=0&sort=latest|}"
+           class="btn btn-sm btn-outline-primary me-2"
+           th:classappend="${sort == 'latest'} ? 'active'">최신순</a>
+
+        <a th:href="@{|/question/detail/${question.id}?answerPage=0&sort=voter|}"
+           class="btn btn-sm btn-outline-primary"
+           th:classappend="${sort == 'voter'} ? 'active'">추천순</a>
+    </div>
     <!-- 답변 반복 시작 -->
-    <div class="card my-3" th:each="answer : ${question.answerList}">
+    <div class="card my-3" th:each="answer : ${answerPaging.content}">
         <a th:id="|answer_${answer.id}|"></a>
         <div class="card-body">
             <div class="card-text" th:utext="${@commonUtil.markdown(answer.content)}"></div>
@@ -69,6 +79,35 @@
         </div>
     </div>
     <!-- 답변 반복 끝  -->
+    <!-- 답변 페이징처리 시작 -->
+    <div th:if="${!answerPaging.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!answerPaging.hasPrevious} ? 'disabled'">
+                <a class="page-link" href="javascript:void(0)" th:data-page="${answerPaging.number - 1}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <th:block th:with="start=${T(java.lang.Math).max(0, answerPaging.number - 2)},
+                       end=${T(java.lang.Math).min(answerPaging.totalPages - 1, answerPaging.number + 2)}">
+                <li th:each="page : ${#numbers.sequence(start, end)}"
+                    th:classappend="${page == answerPaging.number} ? 'active'"
+                    class="page-item">
+                    <a class="page-link" href="javascript:void(0)" th:data-page="${page}" th:text="${page + 1}"></a>
+                </li>
+            </th:block>
+            <li class="page-item" th:classappend="${!answerPaging.hasNext} ? 'disabled'">
+                <a class="page-link" href="javascript:void(0)" th:data-page="${answerPaging.number+1}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 답변 페이징처리 끝 -->
+    <!-- 답변 페이지 이동용 폼 -->
+    <form th:action="@{|/question/detail/${question.id}|}" method="get" id="answerPageForm">
+        <input type="hidden" name="answerPage" id="answerPage" th:value="${answerPaging.number}">
+        <input type="hidden" name="sort" th:value="${sort}">
+    </form>
     <!-- 답변 작성 -->
     <form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
@@ -87,6 +126,17 @@
         });
     });
     const recommend_elements = document.getElementsByClassName("recommend");
+    // 답변 페이징 버튼 클릭 처리
+    const pageLinks = document.getElementsByClassName("page-link");
+    Array.from(pageLinks).forEach(function (element) {
+        element.addEventListener("click", function () {
+            const page = this.dataset.page;
+            if (page !== undefined) {
+                document.getElementById("answerPage").value = page;
+                document.getElementById("answerPageForm").submit();
+            }
+        });
+    });
     Array.from(recommend_elements).forEach(function(element) {
         element.addEventListener('click', function() {
             if(confirm("정말로 추천하시겠습니까?")) {

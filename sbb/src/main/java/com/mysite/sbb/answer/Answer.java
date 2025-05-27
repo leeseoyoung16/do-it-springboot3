@@ -23,6 +23,9 @@ public class Answer
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column
+    private Integer voterCount = 0;
+
     @CreatedDate
     private LocalDateTime createDate;
 
